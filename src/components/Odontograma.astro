@@ -1,0 +1,41 @@
+---
+// Esquema ilustrativo de la arcada (numeración FDI). El script marca las piezas según el paso del plan.
+const upper = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28];
+const lower = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38];
+const size = (n: number) => {
+  const d = n % 10;
+  if (d >= 6) return { w: 38, h: 34 };
+  if (d >= 4) return { w: 30, h: 30 };
+  if (d === 3) return { w: 25, h: 34 };
+  return { w: d === 1 ? 28 : 23, h: 34 };
+};
+const CX = 300, RX = 236, RY = 150;
+function pos(i: number, up: boolean) {
+  const t = (i + 0.5) / 16;
+  const th = up ? Math.PI + t * Math.PI : Math.PI - t * Math.PI;
+  const cy = up ? 205 : 222;
+  return { x: CX + RX * Math.cos(th), y: cy + RY * Math.sin(th) };
+}
+function build(list: number[], up: boolean) {
+  return list.map((n, i) => {
+    const p = pos(i, up);
+    const a = pos(i - 0.05, up), b = pos(i + 0.05, up);
+    const rot = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
+    return { n, ...p, rot, ...size(n) };
+  });
+}
+const teeth = [...build(upper, true), ...build(lower, false)];
+---
+<svg class="odo" viewBox="0 0 600 430" role="img" aria-label="Esquema de la arcada dental con numeración de las piezas" id="odo">
+  <g>
+    {teeth.map((t) => (
+      <g data-fdi={t.n}>
+        <g transform={`translate(${t.x.toFixed(1)} ${t.y.toFixed(1)}) rotate(${t.rot.toFixed(1)})`}>
+          <rect class="tooth" x={-t.w / 2} y={-t.h / 2} width={t.w} height={t.h} rx="9" />
+        </g>
+        <text class="fdi" x={t.x.toFixed(1)} y={t.y.toFixed(1)}>{t.n}</text>
+        <path class="xmark" data-x={t.n} transform={`translate(${t.x.toFixed(1)} ${t.y.toFixed(1)})`} d="M-13 -13 L13 13 M13 -13 L-13 13" />
+      </g>
+    ))}
+  </g>
+</svg>

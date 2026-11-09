@@ -1,0 +1,370 @@
+---
+import Base from "../layouts/Base.astro";
+import Odontograma from "../components/Odontograma.astro";
+import { SITE } from "../config";
+import { CASOS, FILTROS, PLAN_DESTACADO } from "../data/casos";
+
+const waUrl = `https://wa.me/${SITE.wa}?text=${encodeURIComponent("Hola, quiero agendar una evaluación de ortodoncia.")}`;
+
+const metaTexto =
+  "Resolver casos complejos con diagnóstico preciso, biomecánica controlada y un plan que se explica paso a paso, para que cada sonrisa funcione y dure.";
+
+const pasos = [
+  { n: "01", t: "Diagnóstico", d: "Evaluación clínica, fotos, radiografías y análisis de la mordida. Se entiende el problema completo antes de colocar nada." },
+  { n: "02", t: "Plan de tratamiento", d: "Se define qué mover, con qué aparatología y en qué orden: con o sin extracciones, con o sin mini implantes." },
+  { n: "03", t: "Biomecánica controlada", d: "Fuerzas ligeras y precisas, controles periódicos y ajustes medidos. Mover dientes es fácil; moverlos bien, no." },
+  { n: "04", t: "Resultado estable", d: "Mordida que encaja, salud de encías y dientes, y retención para que el resultado dure." },
+];
+
+const paneles = [
+  { n: "01", a: "Maloclusiones", b: "Clase I, II y III", img: "modelos", d: "Diagnóstico preciso y mecánica a la medida, con o sin extracciones, según lo que cada caso necesite.", li: ["Apiñamiento severo", "Mordida profunda", "Mordida abierta y cruzada", "Clase II división 2"] },
+  { n: "02", a: "Mini implantes", b: "Anclaje absoluto", img: "miniimplante", d: "Mover dientes con control, sin depender de otros dientes ni de elásticos que traen efectos no deseados.", li: ["Distalización", "Intrusión de molares", "Recuperación de espacio", "Dientes retenidos"] },
+  { n: "03", a: "Ortopedia", b: "maxilar en niños", img: "radiografia", d: "Guiar el crecimiento durante la dentición mixta para que el maxilar y la mordida se desarrollen mejor.", li: ["Hyrax", "Máscara facial", "Plano inclinado", "Arco lingual"] },
+  { n: "04", a: "Retratamientos", b: "y casos complejos", img: "bracket", d: "Casos que ya pasaron por brackets y necesitan una segunda mirada para terminar bien.", li: ["Extracción asimétrica", "Biomecánica avanzada", "Control de anclaje", "Arco de Burstone"] },
+];
+
+const faqs = [
+  { q: "¿Cuánto dura un tratamiento?", a: "Depende de cada caso: puede ir de unos meses a más de dos años. La duración se estima después del diagnóstico, cuando se conoce la complejidad real del caso." },
+  { q: "¿Siempre hay que extraer dientes?", a: "No. Hay casos que se resuelven sin extracciones y otros en los que extraer es la mejor opción. Se decide con el diagnóstico, no por costumbre." },
+  { q: "¿Desde qué edad conviene una evaluación?", a: "En niños, una evaluación temprana permite detectar problemas de crecimiento del maxilar mientras todavía se puede guiar. En adultos, nunca es tarde para consultar." },
+  { q: "¿Duele la ortodoncia?", a: "Puede haber molestia los primeros días después de cada ajuste. Se usan fuerzas ligeras y controladas para que sea tolerable." },
+  { q: "¿Qué debo llevar a la primera evaluación?", a: "Si tienes radiografías o fotos de tratamientos anteriores, llévalas. Si no, no te preocupes: en la evaluación se indica qué estudios hacen falta." },
+  { q: "¿Cómo agendo mi cita?", a: "Elige día y horario en esta página y te confirmamos por WhatsApp. También puedes escribir directamente al " + SITE.phone + "." },
+];
+
+const iconWa = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 3.5A11 11 0 0 0 3.100 17.200L2 22l4.900-1.300A11 11 0 1 0 20.500 3.500ZM12 20.200a9.100 9.100 0 0 1-4.600-1.300l-.3-.2-2.900.8.800-2.800-.2-.3a9.100 9.100 0 1 1 7.200 3.800Zm5-6.800c-.3-.1-1.600-.8-1.900-.9s-.4-.1-.6.100-.7.900-.9 1.100-.3.200-.6.100a7.400 7.400 0 0 1-3.700-3.200c-.3-.5.300-.5.800-1.500.1-.2 0-.3 0-.5l-.9-2c-.2-.5-.4-.5-.6-.5h-.5a1 1 0 0 0-.7.300 3 3 0 0 0-.9 2.200 5.200 5.200 0 0 0 1.100 2.800 11.900 11.900 0 0 0 4.600 4c1.700.7 2.400.8 3.200.7a2.700 2.700 0 0 0 1.800-1.300 2.200 2.200 0 0 0 .2-1.300c-.1-.1-.2-.2-.5-.3Z"/></svg>';
+---
+<Base
+  title="Reyes Ortodoncia | Ortodoncista en Chiclayo"
+  description="Ortodoncia de casos complejos en Chiclayo: diagnóstico, biomecánica controlada y casos reales. Agenda tu evaluación con el Dr. Edinson Reyes."
+>
+  <!-- pantalla de carga con el logo -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-in">
+      <div class="loader-mark"><img src="/brand/reyes-wordmark.png" alt="" width="898" height="359" /><span class="shine"></span></div>
+      <div class="loader-line"><i></i></div>
+      <div class="loader-tag">Chiclayo · Ortodoncia</div>
+    </div>
+  </div>
+
+  <header class="header" id="top">
+    <div class="wrap header-in">
+      <a class="logo" href="#inicio" aria-label="Reyes Ortodoncia, inicio"><img src="/brand/reyes-wordmark.png" alt="Reyes Ortodoncia" width="100" height="40" /></a>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú"><span></span></button>
+      <nav class="nav" id="nav" aria-label="Principal">
+        <a href="#tratamientos">Tratamientos</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#casos">Casos</a>
+        <a href="#doctor">Doctor</a>
+        <a href="#preguntas">Preguntas</a>
+        <a class="btn btn-primary btn-sm" href="#reserva">Agendar cita</a>
+      </nav>
+    </div>
+    <div class="progress" id="progress"></div>
+  </header>
+
+  <main id="main">
+    <!-- ───── HERO CON VIDEO ───── -->
+    <section class="hero" id="inicio">
+      <div class="hero-media" aria-hidden="true">
+        <video id="heroVideo" src="/flow/hero.mp4" poster="/flow/bracket.webp" autoplay muted loop playsinline preload="auto" tabindex="-1"></video>
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="wrap hero-in">
+        <p class="eyebrow" data-hero="fade">Ortodoncista · {SITE.city}</p>
+        <h1 aria-label="Ortodoncia de verdad. No solo alinear.">
+          <span class="ln" aria-hidden="true"><span data-hero="line">Ortodoncia</span></span>
+          <span class="ln" aria-hidden="true"><span data-hero="line">de <em>verdad.</em></span></span>
+          <span class="ln" aria-hidden="true"><span data-hero="line">No solo alinear.</span></span>
+        </h1>
+        <div class="hero-foot" data-hero="fade">
+          <div>
+            <p class="lead">Casos complejos resueltos con diagnóstico, biomecánica controlada y seguimiento cercano, de la mano del {SITE.doctor}.</p>
+            <div class="hero-labels"><span>Diagnóstico</span><span>Biomecánica</span><span>Mini implantes</span><span>Ortopedia maxilar</span></div>
+          </div>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#reserva">Agendar evaluación</a>
+            <a class="btn btn-ghost" href="#casos">Ver casos reales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── META (banda clara, texto que se llena) ───── -->
+    <section class="intro band-light" aria-label="Nuestra meta">
+      <div class="wrap">
+        <div class="intro-top"><p class="eyebrow">Nuestra meta</p></div>
+        <div class="intro-grid">
+          <figure class="intro-img" aria-hidden="true"><img src="/flow/modelos.webp" alt="" loading="lazy" width="1376" height="768" /></figure>
+          <p class="reveal-text" id="revealText">{metaTexto}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── TRATAMIENTOS (paneles fijados) ───── -->
+    <section class="svcpin" id="tratamientos" aria-label="Tratamientos">
+      <div class="svc-stage" id="svcStage">
+        <ol class="svc-index" aria-hidden="true">
+          {paneles.map((p, i) => <span class={i === 0 ? "on" : ""}>{p.a}</span>)}
+        </ol>
+        {paneles.map((p, i) => (
+          <article class={`svc-panel ${i === 0 ? "is-active" : ""}`} data-i={i}>
+            <div class="bg" aria-hidden="true"><img src={`/flow/${p.img}.webp`} alt="" loading="lazy" width="1376" height="768" /></div>
+            <div class="wrap svc-in">
+              <h2 class="svc-title">{p.a}<em>{p.b}</em></h2>
+              <div class="svc-side">
+                <span class="num">{p.n} / 04</span>
+                <p>{p.d}</p>
+                <ul>{p.li.map((l) => <li>{l}</li>)}</ul>
+                <a class="btn btn-primary btn-sm" href="#casos" style="justify-self:start">Ver casos <span class="plus">+</span></a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- ───── PROCESO (video que avanza con el scroll) ───── -->
+    <section class="proc" id="proceso" aria-labelledby="procT">
+      <div class="proc-stage" id="procStage">
+        <video id="procVideo" src="/flow/scrub-alambre.mp4" poster="/flow/alambre.webp" muted playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
+        <div class="wrap proc-in">
+          <div class="proc-left">
+            <p class="eyebrow">Cómo trabajamos</p>
+            <h2 id="procT">Cada caso, <em>paso a paso</em></h2>
+            <p>La ortodoncia no es solo poner brackets. Es resolver cada caso con un plan y controlarlo hasta el final.</p>
+            <div class="proc-num" id="procNum" aria-hidden="true">
+              {pasos.map((p, i) => <b class={i === 0 ? "" : "out-down"} data-i={i}>{p.n}</b>)}
+            </div>
+          </div>
+          <div class="proc-steps" id="procSteps">
+            {pasos.map((p, i) => (
+              <article class={`step ${i === 0 ? "on" : ""}`} data-step={i}>
+                <span class="mono">Paso {p.n}</span>
+                <h3>{p.t}</h3>
+                <p>{p.d}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+        <div class="proc-bar" aria-hidden="true"><i id="procBar"></i></div>
+      </div>
+    </section>
+
+    <!-- ───── CASOS ───── -->
+    <section class="casos" id="casos" aria-labelledby="casosT">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="eyebrow">Casos reales</p>
+          <h2 id="casosT">Resultados que se <em>explican</em></h2>
+          <p>Cada caso tiene su diagnóstico, su plan y su porqué. Mira cómo se resuelven, en el consultorio.</p>
+        </div>
+
+        <article class="feat" data-reveal aria-labelledby="featT">
+          <div class="feat-left">
+            <div class="feat-tag"><span class="tag live">En tratamiento</span><span class="tag">Clase II div. 2</span><span class="tag">Mordida profunda</span></div>
+            <h3 id="featT">Clase II división 2 con mordida profunda y un diente que nunca salió</h3>
+            <p>Incisivos centrales tapados, laterales cónicos, agenesia de un incisivo inferior y resalte aumentado. Este es su plan.</p>
+
+            <div class="ba" id="ba" style="--pos: 50%">
+              <img src="/casos/durante.jpg" alt="Boca del paciente con brackets, vista frontal" loading="lazy" width="1152" height="1024" />
+              <img class="after" src="/casos/antes.jpg" alt="Boca del paciente antes del tratamiento, vista frontal" loading="lazy" width="1152" height="1024" />
+              <span class="label l">En tratamiento</span><span class="label r">Antes</span>
+              <input type="range" min="0" max="100" value="50" aria-label="Comparar antes y durante el tratamiento" id="baRange" />
+              <span class="handle" aria-hidden="true"></span>
+            </div>
+            <p class="ba-hint">Desliza para comparar. El tratamiento sigue en curso.</p>
+
+            <div class="plan" id="plan" role="tablist" aria-label="Plan de tratamiento">
+              {PLAN_DESTACADO.map((s, i) => (
+                <button type="button" role="tab" aria-selected={i === 0 ? "true" : "false"} class={s.pendiente ? "pend" : ""}
+                  data-teeth={s.teeth.join(",")} data-mark={s.mark.join(",")} data-pend={s.pendiente ? "1" : ""}>
+                  <span class="n">{s.pendiente ? "+" : s.n}</span>
+                  <span><b>{s.titulo}</b><span class="t">{s.texto}</span></span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div class="feat-right">
+            <div class="odo-wrap">
+              <div class="cap"><span class="mono">Esquema de la arcada</span><span class="mono" id="odoStep">Paso 1</span></div>
+              <Odontograma />
+              <p class="odo-note">Esquema ilustrativo. Las piezas resaltadas cambian con cada paso del plan.</p>
+            </div>
+            <div class="phone">
+              <img src="/casos/destacado.jpg" alt="Video del caso explicado" id="featPoster" loading="lazy" width="720" height="1280" />
+              <button class="play" type="button" id="featPlay" aria-label="Reproducir el video del caso"><i></i></button>
+            </div>
+          </div>
+        </article>
+
+        <div class="filters" role="group" aria-label="Filtrar casos" id="filters">
+          {FILTROS.map((f, i) => <button type="button" data-f={f.id} aria-pressed={i === 0 ? "true" : "false"}>{f.label}</button>)}
+        </div>
+        <div class="grid" id="grid">
+          {CASOS.map((c) => (
+            <button class="card" type="button" data-tags={c.tags.join(" ")} data-id={c.id} data-title={c.titulo} data-sum={c.resumen} aria-label={`Ver video: ${c.titulo}`}>
+              <span class="thumb">
+                <img src={`/casos/${c.id}.jpg`} alt="" loading="lazy" width="576" height="1024" />
+                <span class="tag state">{c.estado}</span>
+                <span class="pl"></span>
+              </span>
+              <span class="body"><h3>{c.titulo}</h3><p>{c.resumen}</p></span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── DOCTOR ───── -->
+    <section class="doctor" id="doctor" aria-labelledby="docT">
+      <div class="wrap doc-grid">
+        <div class="doc-card" data-reveal>
+          <img class="bg" src="/flow/bracket.webp" alt="" loading="lazy" width="1376" height="768" aria-hidden="true" />
+          <img class="mark" src="/brand/reyes-wordmark.png" alt="Reyes Ortodoncia" loading="lazy" width="898" height="359" />
+          <span class="mono">Chiclayo · Perú</span>
+        </div>
+        <div class="doc-copy" data-reveal>
+          <p class="eyebrow">Tu ortodoncista</p>
+          <h2 id="docT">{SITE.doctor}</h2>
+          <p>Ortodoncista y docente universitario. Su método se resume en tres palabras: diagnóstico temprano, planificación y biomecánica controlada.</p>
+          <p>Comparte sus casos con claridad porque cree que un paciente informado decide mejor. Ortodoncia de verdad, no solo alinear.</p>
+          <div class="facts">
+            <div class="fact"><b>Especialidad</b><span>Ortodoncia y ortopedia maxilar</span></div>
+            <div class="fact"><b>Enfoque</b><span>Casos complejos y mini implantes</span></div>
+            <div class="fact"><b>Consultorio</b><span>{SITE.address}</span></div>
+            <div class="fact"><b>Atención</b><span>Con cita previa por WhatsApp</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── RESERVA ───── -->
+    <section class="reserva" id="reserva" aria-labelledby="resT">
+      <div class="wrap res-grid">
+        <div class="res-copy" data-reveal>
+          <p class="eyebrow">Agenda</p>
+          <h2 id="resT">Tu evaluación, <em>sin esperas</em></h2>
+          <p>Elige el día y el horario que prefieras. Te confirmamos por WhatsApp en cuanto lo revisemos.</p>
+          <ul>
+            <li><i>1</i>Elige día y horario</li>
+            <li><i>2</i>Déjanos tu nombre y celular</li>
+            <li><i>3</i>Confirmamos tu cita por WhatsApp</li>
+          </ul>
+        </div>
+
+        <div class="book" data-reveal>
+          {SITE.calLink && (
+            <div class="tabs" role="tablist" aria-label="Forma de agendar">
+              <button type="button" role="tab" id="tabCal" aria-selected="true" aria-controls="panCal">Calendario en línea</button>
+              <button type="button" role="tab" id="tabWa" aria-selected="false" aria-controls="panWa">Por WhatsApp</button>
+            </div>
+          )}
+          {SITE.calLink && (
+            <div class="cal" id="panCal" role="tabpanel" aria-labelledby="tabCal">
+              <iframe src={`https://cal.com/${SITE.calLink}?embed=true&theme=dark&layout=month_view`} title="Calendario para agendar la cita" loading="lazy"></iframe>
+            </div>
+          )}
+          <form id="bookForm" novalidate hidden={!!SITE.calLink}
+                data-wa={SITE.wa} data-days={SITE.days.join(",")} data-slots={SITE.slots.join("|")}>
+            <h3>1 · Día</h3>
+            <div class="days" id="days" role="group" aria-label="Elige el día"></div>
+            <h3>2 · Horario preferido</h3>
+            <div class="slots" id="slots" role="group" aria-label="Elige el horario"></div>
+            <h3>3 · Tus datos</h3>
+            <div class="fields">
+              <div class="field"><label for="fn">Nombre</label><input id="fn" name="nombre" autocomplete="name" placeholder="Tu nombre" required /><span class="err" id="en" role="alert"></span></div>
+              <div class="field"><label for="fp">Celular</label><input id="fp" name="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="9xx xxx xxx" required /><span class="err" id="ep" role="alert"></span></div>
+              <div class="field full"><label for="fm">Motivo</label>
+                <select id="fm" name="motivo">
+                  <option>Primera evaluación de ortodoncia</option>
+                  <option>Evaluación para mi hijo o hija</option>
+                  <option>Segunda opinión / retratamiento</option>
+                  <option>Control de tratamiento</option>
+                </select>
+              </div>
+            </div>
+            <div class="summary" id="summary" aria-live="polite">Elige un día y un horario.</div>
+            <button class="btn btn-primary btn-wa" type="submit"><span set:html={iconWa}></span> Pedir cita por WhatsApp</button>
+            <p class="fine">Se abrirá WhatsApp con tu mensaje listo. El horario queda sujeto a confirmación.</p>
+          </form>
+          <noscript><a class="btn btn-primary btn-wa" href={waUrl}>Pedir cita por WhatsApp</a></noscript>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── PREGUNTAS (banda clara) ───── -->
+    <section class="faq band-light" id="preguntas" aria-labelledby="faqT">
+      <div class="wrap faq-grid">
+        <div class="sec-head" data-reveal>
+          <p class="eyebrow">Preguntas</p>
+          <h2 id="faqT">Lo que todos <em>preguntan</em></h2>
+          <p>Respuestas generales y orientativas. Tu caso se evalúa de forma individual.</p>
+        </div>
+        <div class="acc" data-reveal>
+          {faqs.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <div class="ans">{f.a}</div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── CIERRE CON CORTINA ───── -->
+    <section class="outro" id="ubicacion" aria-labelledby="outT">
+      <div class="outro-hero">
+        <div class="bg" id="outroBg" aria-hidden="true"><img src="/flow/alambre.webp" alt="" loading="lazy" width="1376" height="768" /></div>
+        <div class="wrap">
+          <h2 id="outT">Tu sonrisa, con <em>ortodoncia de verdad.</em></h2>
+        </div>
+      </div>
+      <div class="outro-card">
+        <div class="wrap">
+          <div class="outro-logo"><img src="/brand/reyes-wordmark.png" alt="Reyes Ortodoncia" width="898" height="359" loading="lazy" /></div>
+          <div class="outro-grid">
+            <div>
+              <h3>{SITE.address}</h3>
+              <p>Atención con cita previa. Escríbenos por WhatsApp o llama al {SITE.phone}.</p>
+            </div>
+            <div class="outro-links">
+              <div class="ubic-actions">
+                <a class="btn btn-primary" href="#reserva">Agendar cita</a>
+                <a class="btn btn-ghost btn-wa" href={waUrl} target="_blank" rel="noopener"><span set:html={iconWa}></span> {SITE.phone}</a>
+                <a class="btn btn-ghost" href={SITE.maps} target="_blank" rel="noopener">Cómo llegar</a>
+              </div>
+              <div class="social">
+                <a href={SITE.social.tiktok} target="_blank" rel="noopener">TikTok</a>
+                <a href={SITE.social.instagram} target="_blank" rel="noopener">Instagram</a>
+                <a href={SITE.social.facebook} target="_blank" rel="noopener">Facebook</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <span>© {new Date().getFullYear()} Reyes Ortodoncia · {SITE.city}. Los resultados varían según cada paciente.</span>
+      <nav aria-label="Pie de página"><a href="#tratamientos">Tratamientos</a><a href="#casos">Casos</a><a href="#reserva">Agendar</a><a href="#preguntas">Preguntas</a></nav>
+      <button type="button" class="pause" id="pauseBtn" aria-pressed="false">Pausar animaciones</button>
+    </div>
+  </footer>
+
+  <a class="fab" href={waUrl} target="_blank" rel="noopener" aria-label="Escribir por WhatsApp"><span set:html={iconWa}></span></a>
+  <div class="sticky-cta"><a class="btn btn-primary" href="#reserva">Agendar evaluación</a></div>
+
+  <dialog class="modal" id="modal" aria-labelledby="mTitle">
+    <button class="close" type="button" id="mClose" aria-label="Cerrar video">×</button>
+    <video id="mVideo" controls playsinline preload="none"></video>
+    <div class="mb">
+      <h3 id="mTitle"></h3>
+      <p id="mSum"></p>
+      <a class="btn btn-primary btn-sm" href="#reserva" id="mCta">Quiero una evaluación</a>
+    </div>
+  </dialog>
+</Base>

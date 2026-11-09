@@ -1,0 +1,44 @@
+---
+import "../styles/global.css";
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#131418" />
+    <!-- Versión de revisión: que no la indexen los buscadores. Quitar esta línea y public/robots.txt al publicar de forma definitiva. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:image" content="/flow/bracket.webp" />
+    <link rel="icon" type="image/png" href="/brand/reyes-logo.png" />
+    <link rel="preload" as="image" href="/brand/reyes-wordmark.png" />
+    <script is:inline>
+      (function () {
+        var h = document.documentElement;
+        h.classList.add("js");
+        var pref = "";
+        try { pref = localStorage.getItem("motion") || ""; if (pref) h.dataset.motion = pref; } catch (e) {}
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (pref === "off" || (reduce && pref !== "on")) { h.classList.add("loaded"); return; }
+        h.classList.add("loading");
+        // seguro: si el script principal falla, la pantalla de carga se retira igual
+        setTimeout(function () { h.classList.add("loaded"); h.classList.remove("loading"); }, 9000);
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Saltar al contenido</a>
+    <slot />
+    <script>
+      import "../scripts/main.ts";
+    </script>
+  </body>
+</html>

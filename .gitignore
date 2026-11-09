@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.claude/
+material-original/
+.env
+.env.*
+.DS_Store
